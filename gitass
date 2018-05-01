@@ -1,0 +1,25 @@
+AWS VPC:
+Region: DC locations where AWS services available
+AZ (Avilability Zone): In every region we have minimum 2 AZ's (DC placed locations) both are interlinked in a single region 
+					   If one AZ fails the other one will handle the requests.
+Before VPC if one VM wants to connect to another VM in same region but diff AZ's we need netwok congiration b/w two AZ's 
+but netwok access we won't get so, to overcome this AWS provided interlinked concept.
+ISSUES: 
+Security: If AZ's are interlinked means we can access the data between two diff companies or clients. (because of interlinked)
+IP Address: For two clients are requested for same IP range means , It will be confuse because both IP's are same (once the enduser pass the request to DC )
+To overcome this situation AWS provided AWS VPC concept:
+It will create one Virtual Layer b/w the AZ'z by this we are unable to see the other VM data in other AZ 
+once layer formed we can give same IP ranges for two clients through this the end user request is directly go to the repective client VM and fetch the data!
+*We are connecting our DC's through IGW (Internet Gateway)*
+AWS VPC Creation steps:
+1. Create VPC and name it & assign IP range 10.1.0.0/16 (We can get 16 laks IP's) finally enable DNS Hostnames on VPC.
+2. Create Subnets as following & enable auto assign IP's   (*If you want to availabl your VM in multiple AZ's so, please create a subnet on that perticuler AZ*)
+	WebServers - 10.1.1.0/24 - us-east-1a (we can get 251 IP address)
+	AppServers - 10.1.2.0/24 - us-east-1b
+	DbServers  - 10.1.3.0/24 - us-east-1c
+3. Create IGW and attach to VPC   [For one VPC, only one IGW we can create]
+4. Use default routing tables and Subnets to it.
+5. Configure route towrds IGW so that VM's send the traffic outside of VPC 
+6. Deploy the VM's in diff AZ's & check the communication.
+[VPC is regioned dependent, We can't extend to another region]
+[VPC is not AZ's dependent]   
